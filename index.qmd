@@ -198,11 +198,12 @@ print(shipments_with_lateness[['shipID', 'plannedShipDate', 'actualShipDate', 'i
 - What is the `dtype` of the `actualShipDate` series? How can you find out using code?
 - Why is it important that both `actualShipDate` and `plannedShipDate` have the same data type for comparison?
 
+
 **Question 2: String vs Date Comparison**
 - Can you give an example where comparing two dates as strings would yield unintuitive results, e.g. what happens if you try to compare "04-11-2025" and "05-20-2024" as strings vs as dates?
 
 **Question 3: Debug This Code**
-```python
+```{python}
 # This code has an error - can you spot it?
 shipments_with_lateness = (
     shipments_df
@@ -218,7 +219,32 @@ What's wrong with the `lateStatement` assignment and how would you fix it?
 
 #### Briefly Give Answers to the Discussion Questions In This Section
 
-Adam's answers will be here.
+
+`dtype` of `actualShipDate` is datetime64. 
+```{python}
+# | echo: True
+# Find the dtype of 'actualShipDate'
+print("Data type of 'actualShipDate':", shipments_df['actualShipDate'].dtype)
+```
+
+It's important for `actualShipDate` and `plannedShipDate` to have the same data type, because as strings in lexicographic ordering, one might be greater than the other, but as date times it might be the opposite. 
+
+For example: 
+
+```{python}
+# | echo: True
+
+# Compare as strings
+print('"04-11-2025" > "05-20-2024"?', "04-11-2025" > "05-20-2024")  # string comparison
+
+from datetime import datetime
+
+date1 = datetime.strptime("04-11-2025", "%m-%d-%Y")
+date2 = datetime.strptime("05-20-2024", "%m-%d-%Y")
+print('datetime(04-11-2025) > datetime(05-20-2024)?', date1 > date2)  # datetime comparison
+```
+```
+
 
 ### 2. Subset: Querying Rows and Filtering Columns
 
