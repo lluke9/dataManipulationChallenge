@@ -11,50 +11,6 @@ execute:
 
 # 🔗 Data Manipulation Challenge - A Mental Model for Method Chaining in Pandas
 
-::: {.callout-important}
-## 📊 Challenge Requirements In Section [Student Analysis Section](#student-analysis-section)
-- Complete all discussion questions for the seven mental models (plus some extra requirements for higher grades)
-:::
-
-::: {.callout-important}
-## 🎯 Note on Python Usage
-
-**Recommended Workflow: Use Your Existing Virtual Environment**
-If you completed the Tech Setup Challenge Part 2, you already have a virtual environment set up! Here's how to use it for this new challenge:
-
-1. **Clone this new challenge repository** (see Getting Started section below)
-2. **Open the cloned repository in Cursor**
-3. **Set this project to use your existing Python interpreter:**
-   - Press `Ctrl+Shift+P` → "Python: Select Interpreter"
-   - Navigate to and choose the interpreter from your existing virtual environment (e.g., `your-previous-project/venv/Scripts/python.exe`)
-4. **Activate the environment in your terminal:**
-   - Open terminal in Cursor (`Ctrl + ``)
-   - Navigate to your previous project folder where you have the `venv` folder
-   - **💡 Pro tip:** You can quickly navigate by typing `cd` followed by dragging the folder from your file explorer into the terminal
-   - Activate using the appropriate command for your system:
-     - **Windows Command Prompt:** `venv\Scripts\activate`
-     - **Windows PowerShell:** `.\venv\Scripts\Activate.ps1`
-     - **Mac/Linux:** `source venv/bin/activate`
-   - You should see `(venv)` at the beginning of your terminal prompt
-5. **Install additional packages if needed:** `pip install pandas numpy matplotlib seaborn`
-
-::: {.callout-warning}
-## ⚠️ Cloud Storage Warning
-
-**Avoid using Google Drive, OneDrive, or other cloud storage for Python projects!** These services can cause issues with:
-- Package installations failing due to file locking
-- Virtual environment corruption
-- Slow performance during pip operations
-
-**Best practice:** Keep your Python projects in a local folder like `C:\Users\YourName\Documents\` or `~/Documents/` instead of cloud-synced folders.
-:::
-
-**Alternative: Create a New Virtual Environment**
-If you prefer a fresh environment, follow the Quarto documentation: [https://quarto.org/docs/projects/virtual-environments.html](https://quarto.org/docs/projects/virtual-environments.html). Be sure to follow the instructions to activate the environment, set it up as your default Python interpreter for the project, and install the necessary packages (e.g. pandas) for this challenge.  For installing the packages, you can use the `pip install -r requirements.txt` command since you already have the requirements.txt file in your project.   Some steps do take a bit of time, so be patient.
-
-**Why This Works:** Virtual environments are portable - you can use the same environment across multiple projects, and Cursor automatically activates it when you select the interpreter!
-
-:::
 
 ## The Problem: Mastering Data Manipulation Through Method Chaining
 
@@ -63,14 +19,6 @@ If you prefer a fresh environment, follow the Quarto documentation: [https://qua
 **The Challenge:** Real-world data analysis requires combining multiple data manipulation techniques in sequence. Rather than creating intermediate variables at each step, method chaining allows us to write clean, readable code that flows logically from one operation to the next.
 
 **Our Approach:** We'll work with ZappTech's shipment data to answer critical business questions about service levels and cross-category orders, using the seven mental models of data manipulation through pandas method chaining.
-
-::: {.callout-warning}
-## ⚠️ AI Partnership Required
-
-This challenge pushes boundaries intentionally. You'll tackle problems that normally require weeks of study, but with Cursor AI as your partner (and your brain keeping it honest), you can accomplish more than you thought possible.
-
-**The new reality:** The four stages of competence are Ignorance → Awareness → Learning → Mastery. AI lets us produce Mastery-level work while operating primarily in the Awareness stage. I focus on awareness training, you leverage AI for execution, and together we create outputs that used to require years of dedicated study.
-:::
 
 ## The Seven Mental Models of Data Manipulation
 
@@ -203,7 +151,7 @@ print(shipments_with_lateness[['shipID', 'plannedShipDate', 'actualShipDate', 'i
 - Can you give an example where comparing two dates as strings would yield unintuitive results, e.g. what happens if you try to compare "04-11-2025" and "05-20-2024" as strings vs as dates?
 
 **Question 3: Debug This Code**
-```{python}
+```python
 # This code has an error - can you spot it?
 shipments_with_lateness = (
     shipments_df
@@ -214,19 +162,23 @@ shipments_with_lateness = (
     )
 )
 ```
+
 What's wrong with the `lateStatement` assignment and how would you fix it?
-:::
+
 
 #### Briefly Give Answers to the Discussion Questions In This Section
 
-
+1. 
 `dtype` of `actualShipDate` is datetime64. 
 ```{python}
 # | echo: True
 # Find the dtype of 'actualShipDate'
 print("Data type of 'actualShipDate':", shipments_df['actualShipDate'].dtype)
+
+print("Data type of 'plannedShipDate'", shipments_df['plannedShipDate'].dtype)
 ```
 
+2. 
 It's important for `actualShipDate` and `plannedShipDate` to have the same data type, because as strings in lexicographic ordering, one might be greater than the other, but as date times it might be the opposite. 
 
 For example: 
@@ -243,6 +195,25 @@ date1 = datetime.strptime("04-11-2025", "%m-%d-%Y")
 date2 = datetime.strptime("05-20-2024", "%m-%d-%Y")
 print('datetime(04-11-2025) > datetime(05-20-2024)?', date1 > date2)  # datetime comparison
 ```
+
+3. 
+The following code used incorrect syntax -- if/else isn't an operation that works on series/masks. The proper operation is .map().
+
+```{python}
+#| eval: false
+# This code has an error - can you spot it?
+shipments_with_lateness = (
+    shipments_df
+    .assign(
+        is_late=lambda df: df['actualShipDate'] > df['plannedShipDate'],
+        days_late=lambda df: (df['actualShipDate'] - df['plannedShipDate']).dt.days,
+        lateStatement=lambda df: df['is_late'].map({
+            True: "Darn shipment is late",
+            False: "Shipment is on time"
+        }
+        )
+    )
+)
 ```
 
 
@@ -289,7 +260,13 @@ print(late_shipments.head())
 
 #### Briefly Give Answers to the Discussion Questions In This Section
 
-> Replace this with your answers to the discussion questions
+1. 
+`.query('is_late == True')` is the method chaining way of writing a query operation. `[df['is_late'] == True]` is the traditional Pythonic way of doing it, but obscures the meaning behind the Python operations -- a subscription operator on the dataframe with `df['is_late']` and then a comparison operator `==`, which operationally interprets into "df rows, where is_late is True". The `.query()` method is far more explicit about this, since we can almost 1-1 interpret the keywords back into the natural language. 
+
+2. 
+
+
+
 
 ### 3. Drop: Removing Unwanted Data
 
