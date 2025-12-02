@@ -223,7 +223,7 @@ First few rows of product line data:
 <h2 class="anchored" data-anchor-id="the-seven-mental-models-a-progressive-learning-journey">The Seven Mental Models: A Progressive Learning Journey</h2>
 <p>Now we’ll work through each of the seven mental models using method chaining, starting simple and building complexity.</p>
 <section id="assign-adding-new-variables" class="level3">
-<h3 class="anchored">1. Assign: Adding New Variables</h3>
+<h3 class="anchored" data-anchor-id="assign-adding-new-variables">1. Assign: Adding New Variables</h3>
 <p><strong>Mental Model:</strong> Create new columns with calculations and transformations.</p>
 <p>Let’s start by calculating whether each shipment was late:</p>
 <div id="mental-model-1-assign" class="cell" data-execution_count="2">
@@ -274,6 +274,8 @@ First few rows of product line data:
 <div class="callout-body-container callout-body">
 <p><strong>Question 1: Data Types and Date Handling</strong> - What is the <code>dtype</code> of the <code>actualShipDate</code> series? How can you find out using code? - Why is it important that both <code>actualShipDate</code> and <code>plannedShipDate</code> have the same data type for comparison?</p>
 <p><strong>Question 2: String vs Date Comparison</strong> - Can you give an example where comparing two dates as strings would yield unintuitive results, e.g.&nbsp;what happens if you try to compare “04-11-2025” and “05-20-2024” as strings vs as dates?</p>
+</div>
+</div>
 <p><strong>Question 3: Debug This Code</strong></p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># This code has an error - can you spot it?</span></span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>shipments_with_lateness <span class="op">=</span> (</span>
@@ -290,7 +292,7 @@ First few rows of product line data:
 <ol type="1">
 <li><code>dtype</code> of <code>actualShipDate</code> is datetime64.</li>
 </ol>
-<div id="5b64929e" class="cell" data-execution_count="3">
+<div id="0d7bc20d" class="cell" data-execution_count="3">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Find the dtype of 'actualShipDate'</span></span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Data type of 'actualShipDate':"</span>, shipments_df[<span class="st">'actualShipDate'</span>].dtype)</span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -304,7 +306,7 @@ Data type of 'plannedShipDate' datetime64[ns]</code></pre>
 <li>It’s important for <code>actualShipDate</code> and <code>plannedShipDate</code> to have the same data type, because as strings in lexicographic ordering, one might be greater than the other, but as date times it might be the opposite.</li>
 </ol>
 <p>For example:</p>
-<div id="db9b81a6" class="cell" data-execution_count="4">
+<div id="f2f65767" class="cell" data-execution_count="4">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Compare as strings</span></span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'"04-11-2025" &gt; "05-20-2024"?'</span>, <span class="st">"04-11-2025"</span> <span class="op">&gt;</span> <span class="st">"05-20-2024"</span>)  <span class="co"># string comparison</span></span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -321,7 +323,7 @@ datetime(04-11-2025) &gt; datetime(05-20-2024)? True</code></pre>
 <ol start="3" type="1">
 <li>The following code used incorrect syntax – if/else isn’t an operation that works on series/masks. The proper operation is .map().</li>
 </ol>
-<div id="3b4bf415" class="cell" data-execution_count="5">
+<div id="6549c16c" class="cell" data-execution_count="5">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># This code has an error - can you spot it?</span></span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>shipments_with_lateness <span class="op">=</span> (</span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>    shipments_df</span>
@@ -336,6 +338,7 @@ datetime(04-11-2025) &gt; datetime(05-20-2024)? True</code></pre>
 <span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>    )</span>
 <span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
+</section>
 </section>
 <section id="subset-querying-rows-and-filtering-columns" class="level3">
 <h3 class="anchored" data-anchor-id="subset-querying-rows-and-filtering-columns">2. Subset: Querying Rows and Filtering Columns</h3>
@@ -401,22 +404,48 @@ Late shipments sample:
 <li><p><code>.query('is_late == True')</code> is the method chaining way of writing a query operation. <code>[df['is_late'] == True]</code> is the traditional Pythonic way of doing it, but obscures the meaning behind the Python operations – a subscription operator on the dataframe with <code>df['is_late']</code> and then a comparison operator <code>==</code>, which operationally interprets into “df rows, where is_late is True”. The <code>.query()</code> method is far more explicit about this, since we can almost 1-1 interpret the keywords back into the natural language.</p></li>
 <li></li>
 </ol>
+<div id="66d34616" class="cell" data-execution_count="7">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Query rows for shipments later than 5 days</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>late_shipments_5days <span class="op">=</span> (</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>    shipments_with_lateness</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>    .assign(</span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>        late_threshold<span class="op">=</span><span class="dv">5</span></span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>    .query(<span class="st">'days_late &gt; late_threshold'</span>)  <span class="co"># Query rows where is_late is True</span></span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>    .<span class="bu">filter</span>([<span class="st">'shipID'</span>, <span class="st">'partID'</span>, <span class="st">'plannedShipDate'</span>, <span class="st">'actualShipDate'</span>, <span class="st">'days_late'</span>])  <span class="co"># Filter to keep specific columns</span></span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Found </span><span class="sc">{</span><span class="bu">len</span>(late_shipments_5days)<span class="sc">}</span><span class="ss"> shipments later than 5 days out of </span><span class="sc">{</span><span class="bu">len</span>(shipments_with_lateness)<span class="sc">}</span><span class="ss"> total"</span>)</span>
+<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">Late shipments sample:"</span>)</span>
+<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(late_shipments.head())</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Found 105 shipments later than 5 days out of 4000 total
+
+Late shipments sample:
+     shipID       partID plannedShipDate actualShipDate  days_late
+776   10192  part0164a70      2013-10-09     2013-10-14          5
+777   10192  part9259836      2013-10-09     2013-10-14          5
+778   10192  part4526c73      2013-10-09     2013-10-14          5
+779   10192  partbb47e81      2013-10-09     2013-10-14          5
+780   10192  part008482f      2013-10-09     2013-10-14          5</code></pre>
+</div>
+</div>
 </section>
 </section>
 <section id="drop-removing-unwanted-data" class="level3">
 <h3 class="anchored" data-anchor-id="drop-removing-unwanted-data">3. Drop: Removing Unwanted Data</h3>
 <p><strong>Mental Model:</strong> Remove columns or rows you don’t need.</p>
 <p>Let’s clean up our data by removing unnecessary columns:</p>
-<div id="mental-model-3-drop" class="cell" data-execution_count="7">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a cleaner dataset by dropping unnecessary columns</span></span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>clean_shipments <span class="op">=</span> (</span>
-<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>    shipments_with_lateness</span>
-<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>    .drop(columns<span class="op">=</span>[<span class="st">'quantity'</span>])  <span class="co"># Drop quantity column (not needed for our analysis)</span></span>
-<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>    .dropna(subset<span class="op">=</span>[<span class="st">'plannedShipDate'</span>, <span class="st">'actualShipDate'</span>])  <span class="co"># Remove rows with missing dates</span></span>
-<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Cleaned dataset: </span><span class="sc">{</span><span class="bu">len</span>(clean_shipments)<span class="sc">}</span><span class="ss"> rows, </span><span class="sc">{</span><span class="bu">len</span>(clean_shipments.columns)<span class="sc">}</span><span class="ss"> columns"</span>)</span>
-<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Remaining columns:"</span>, clean_shipments.columns.tolist())</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="mental-model-3-drop" class="cell" data-execution_count="8">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a cleaner dataset by dropping unnecessary columns</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>clean_shipments <span class="op">=</span> (</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>    shipments_with_lateness</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>    .drop(columns<span class="op">=</span>[<span class="st">'quantity'</span>])  <span class="co"># Drop quantity column (not needed for our analysis)</span></span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>    .dropna(subset<span class="op">=</span>[<span class="st">'plannedShipDate'</span>, <span class="st">'actualShipDate'</span>])  <span class="co"># Remove rows with missing dates</span></span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Cleaned dataset: </span><span class="sc">{</span><span class="bu">len</span>(clean_shipments)<span class="sc">}</span><span class="ss"> rows, </span><span class="sc">{</span><span class="bu">len</span>(clean_shipments.columns)<span class="sc">}</span><span class="ss"> columns"</span>)</span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Remaining columns:"</span>, clean_shipments.columns.tolist())</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Cleaned dataset: 4000 rows, 6 columns
 Remaining columns: ['shipID', 'plannedShipDate', 'actualShipDate', 'partID', 'is_late', 'days_late']</code></pre>
@@ -438,25 +467,30 @@ Remaining columns: ['shipID', 'plannedShipDate', 'actualShipDate', 'partID', 'is
 </div>
 <section id="briefly-give-answers-to-the-discussion-questions-in-this-section-2" class="level4">
 <h4 class="anchored" data-anchor-id="briefly-give-answers-to-the-discussion-questions-in-this-section-2">Briefly Give Answers to the Discussion Questions In This Section</h4>
-<blockquote class="blockquote">
-<p>Replace this with your answers to the discussion questions</p>
-</blockquote>
+<ol type="1">
+<li><p>They achieve mostly the same thing. However, if you have a particularly wide dataset and want to only drop a few, <code>.drop()</code> is more convenient than <code>.filter()</code></p></li>
+<li><p>By default, if you do not provide <code>.dropna()</code> with a <code>subset</code> argument, the default is that it drops all rows with a <code>null</code> in <em>any</em> column. The default values for <code>.dropna()</code> per the documentation are:</p></li>
+</ol>
+<ul>
+<li><code>subset=Null</code> – this is interpreted as considering columns.</li>
+<li><code>how="any""</code> – this is interpreted as “drop all rows that are missing any of the columns designated by <code>subset</code>”</li>
+</ul>
 </section>
 </section>
 <section id="sort-arranging-data" class="level3">
 <h3 class="anchored" data-anchor-id="sort-arranging-data">4. Sort: Arranging Data</h3>
 <p><strong>Mental Model:</strong> Order data by values or indices.</p>
 <p>Let’s sort by lateness to see the worst offenders:</p>
-<div id="mental-model-4-sort" class="cell" data-execution_count="8">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Sort by days late (worst first)</span></span>
-<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>sorted_by_lateness <span class="op">=</span> (</span>
-<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>    clean_shipments</span>
-<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>    .sort_values(<span class="st">'days_late'</span>, ascending<span class="op">=</span><span class="va">False</span>)  <span class="co"># Sort by days_late, highest first</span></span>
-<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>    .reset_index(drop<span class="op">=</span><span class="va">True</span>)  <span class="co"># Reset index to be sequential</span></span>
-<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Shipments sorted by lateness (worst first):"</span>)</span>
-<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(sorted_by_lateness[[<span class="st">'shipID'</span>, <span class="st">'partID'</span>, <span class="st">'days_late'</span>, <span class="st">'is_late'</span>]].head(<span class="dv">10</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="mental-model-4-sort" class="cell" data-execution_count="9">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Sort by days late (worst first)</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>sorted_by_lateness <span class="op">=</span> (</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>    clean_shipments</span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>    .sort_values(<span class="st">'days_late'</span>, ascending<span class="op">=</span><span class="va">False</span>)  <span class="co"># Sort by days_late, highest first</span></span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>    .reset_index(drop<span class="op">=</span><span class="va">True</span>)  <span class="co"># Reset index to be sequential</span></span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Shipments sorted by lateness (worst first):"</span>)</span>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(sorted_by_lateness[[<span class="st">'shipID'</span>, <span class="st">'partID'</span>, <span class="st">'days_late'</span>, <span class="st">'is_late'</span>]].head(<span class="dv">10</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Shipments sorted by lateness (worst first):
    shipID       partID  days_late  is_late
@@ -488,32 +522,33 @@ Remaining columns: ['shipID', 'plannedShipDate', 'actualShipDate', 'partID', 'is
 </div>
 <section id="briefly-give-answers-to-the-discussion-questions-in-this-section-3" class="level4">
 <h4 class="anchored" data-anchor-id="briefly-give-answers-to-the-discussion-questions-in-this-section-3">Briefly Give Answers to the Discussion Questions In This Section</h4>
-<blockquote class="blockquote">
-<p>Replace this with your answers to the discussion questions</p>
-</blockquote>
+<ol type="1">
+<li><p><code>ascending=False</code> means that it is sorted in descending order of the designated column, in this case <code>days_late</code>. The highest value for <code>days_late</code>, i.e.&nbsp;the latest shipment, will be listed first. To sort by multiple columns, the parameter <code>by</code> seems to accept type of <code>IndexLabel</code>, meaning we could pass in an array of columns or an index object like <code>df.columns</code>.</p></li>
+<li><p>We use <code>.reset_index(drop=True)</code> because when we sort, the row indices actually follow the original rows – so the row indices will not be in increasing order as we expect.This method will also re-index, and discard the old one with <code>drop=True</code>. Normally it will preserve it in a new column. Not resetting the index could be problematic if we use, say, <code>.loc[:5]</code> to take the top 5, when in reality indices 0, 1, 2, 3, and 4 could be anywhere in the dataframe.</p></li>
+</ol>
 </section>
 </section>
 <section id="aggregate-summarizing-data" class="level3">
 <h3 class="anchored" data-anchor-id="aggregate-summarizing-data">5. Aggregate: Summarizing Data</h3>
 <p><strong>Mental Model:</strong> Calculate summary statistics across groups or the entire dataset.</p>
 <p>Let’s calculate overall service level metrics:</p>
-<div id="mental-model-5-aggregate" class="cell" data-execution_count="9">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate overall service level metrics</span></span>
-<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>service_metrics <span class="op">=</span> (</span>
-<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>    clean_shipments</span>
-<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>    .agg({</span>
-<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>        <span class="st">'is_late'</span>: [<span class="st">'count'</span>, <span class="st">'sum'</span>, <span class="st">'mean'</span>],  <span class="co"># Count total, count late, calculate percentage</span></span>
-<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>        <span class="st">'days_late'</span>: [<span class="st">'mean'</span>, <span class="st">'max'</span>]  <span class="co"># Average and maximum days late</span></span>
-<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>    })</span>
-<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a>    .<span class="bu">round</span>(<span class="dv">3</span>)</span>
-<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Overall Service Level Metrics:"</span>)</span>
-<span id="cb17-12"><a href="#cb17-12" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(service_metrics)</span>
-<span id="cb17-13"><a href="#cb17-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-14"><a href="#cb17-14" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate percentage on-time directly from the data</span></span>
-<span id="cb17-15"><a href="#cb17-15" aria-hidden="true" tabindex="-1"></a>on_time_rate <span class="op">=</span> (<span class="dv">1</span> <span class="op">-</span> clean_shipments[<span class="st">'is_late'</span>].mean()) <span class="op">*</span> <span class="dv">100</span></span>
-<span id="cb17-16"><a href="#cb17-16" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"</span><span class="ch">\n</span><span class="ss">On-time delivery rate: </span><span class="sc">{</span>on_time_rate<span class="sc">:.1f}</span><span class="ss">%"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="mental-model-5-aggregate" class="cell" data-execution_count="10">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate overall service level metrics</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>service_metrics <span class="op">=</span> (</span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>    clean_shipments</span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>    .agg({</span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>        <span class="st">'is_late'</span>: [<span class="st">'count'</span>, <span class="st">'sum'</span>, <span class="st">'mean'</span>],  <span class="co"># Count total, count late, calculate percentage</span></span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>        <span class="st">'days_late'</span>: [<span class="st">'mean'</span>, <span class="st">'max'</span>]  <span class="co"># Average and maximum days late</span></span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a>    })</span>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a>    .<span class="bu">round</span>(<span class="dv">3</span>)</span>
+<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-11"><a href="#cb19-11" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Overall Service Level Metrics:"</span>)</span>
+<span id="cb19-12"><a href="#cb19-12" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(service_metrics)</span>
+<span id="cb19-13"><a href="#cb19-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-14"><a href="#cb19-14" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate percentage on-time directly from the data</span></span>
+<span id="cb19-15"><a href="#cb19-15" aria-hidden="true" tabindex="-1"></a>on_time_rate <span class="op">=</span> (<span class="dv">1</span> <span class="op">-</span> clean_shipments[<span class="st">'is_late'</span>].mean()) <span class="op">*</span> <span class="dv">100</span></span>
+<span id="cb19-16"><a href="#cb19-16" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"</span><span class="ch">\n</span><span class="ss">On-time delivery rate: </span><span class="sc">{</span>on_time_rate<span class="sc">:.1f}</span><span class="ss">%"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Overall Service Level Metrics:
         is_late  days_late
@@ -540,27 +575,27 @@ On-time delivery rate: 88.6%</code></pre>
 </div>
 <section id="briefly-give-answers-to-the-discussion-questions-in-this-section-4" class="level4">
 <h4 class="anchored" data-anchor-id="briefly-give-answers-to-the-discussion-questions-in-this-section-4">Briefly Give Answers to the Discussion Questions In This Section</h4>
-<blockquote class="blockquote">
-<p>Replace this with your answers to the discussion questions</p>
-</blockquote>
+<ol type="1">
+<li>Running <code>sum()</code> on a Boolean series treats booleans as integers 0 and 1, so <code>sum()</code> just counts the number of <code>True</code> values.</li>
+</ol>
 </section>
 </section>
 <section id="merge-combining-information" class="level3">
 <h3 class="anchored" data-anchor-id="merge-combining-information">6. Merge: Combining Information</h3>
 <p><strong>Mental Model:</strong> Join data from multiple sources to create richer datasets.</p>
 <p>Now let’s analyze service levels by product category. First, we need to merge our data:</p>
-<div id="mental-model-6-merge-prep" class="cell" data-execution_count="10">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Merge shipment data with product line data</span></span>
-<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>shipments_with_category <span class="op">=</span> (</span>
-<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>    clean_shipments</span>
-<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>    .merge(product_line_df, on<span class="op">=</span><span class="st">'partID'</span>, how<span class="op">=</span><span class="st">'left'</span>)  <span class="co"># Left join to keep all shipments</span></span>
-<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>    .assign(</span>
-<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>        category_late<span class="op">=</span><span class="kw">lambda</span> df: df[<span class="st">'is_late'</span>] <span class="op">&amp;</span> df[<span class="st">'prodCategory'</span>].notna()  <span class="co"># Only count as late if we have category info</span></span>
-<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">Product categories available:"</span>)</span>
-<span id="cb19-11"><a href="#cb19-11" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(shipments_with_category[<span class="st">'prodCategory'</span>].value_counts())</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="mental-model-6-merge-prep" class="cell" data-execution_count="11">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Merge shipment data with product line data</span></span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>shipments_with_category <span class="op">=</span> (</span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>    clean_shipments</span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>    .merge(product_line_df, on<span class="op">=</span><span class="st">'partID'</span>, how<span class="op">=</span><span class="st">'left'</span>)  <span class="co"># Left join to keep all shipments</span></span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>    .assign(</span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a>        category_late<span class="op">=</span><span class="kw">lambda</span> df: df[<span class="st">'is_late'</span>] <span class="op">&amp;</span> df[<span class="st">'prodCategory'</span>].notna()  <span class="co"># Only count as late if we have category info</span></span>
+<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-10"><a href="#cb21-10" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">Product categories available:"</span>)</span>
+<span id="cb21-11"><a href="#cb21-11" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(shipments_with_category[<span class="st">'prodCategory'</span>].value_counts())</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Product categories available:
@@ -588,29 +623,43 @@ Name: count, dtype: int64</code></pre>
 </div>
 <section id="briefly-give-answers-to-the-discussion-questions-in-this-section-5" class="level4">
 <h4 class="anchored" data-anchor-id="briefly-give-answers-to-the-discussion-questions-in-this-section-5">Briefly Give Answers to the Discussion Questions In This Section</h4>
-<blockquote class="blockquote">
-<p>Replace this with your answers to the discussion questions</p>
-</blockquote>
+<ol type="1">
+<li>The idea here is to look up product information for each shipment using the field <code>partID</code>. Even if that <code>partID</code> field is null, we should keep that shipment, and that’s what <code>how='left'</code> does. We can verify that no shipments were lost:</li>
+</ol>
+<div id="dea0f480" class="cell" data-execution_count="12">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Number of shipments in original dataset: </span><span class="sc">{</span>clean_shipments[<span class="st">'actualShipDate'</span>]<span class="sc">.</span>count()<span class="sc">}</span><span class="ch">\n</span><span class="ss">"</span>)</span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Number of shipments in new dataset: </span><span class="sc">{</span>shipments_with_category[<span class="st">'actualShipDate'</span>]<span class="sc">.</span>count()<span class="sc">}</span><span class="ch">\n</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Number of shipments in original dataset: 4000
+
+Number of shipments in new dataset: 4000
+</code></pre>
+</div>
+</div>
+<p>We use <code>actualShipDate</code> because this field is not tampered with when we join with the product dataset – it doesn’t exist in that one. If we have 4000 non-null <code>actualShipDate</code> rows then we know the original ones are in there.</p>
+<ol start="2" type="1">
+<li>If there are duplicates on the right side, the row in the original dataset is duplicated also with respective product information for each duplicated row.</li>
+</ol>
 </section>
 </section>
 <section id="split-apply-combine-group-analysis" class="level3">
 <h3 class="anchored" data-anchor-id="split-apply-combine-group-analysis">7. Split-Apply-Combine: Group Analysis</h3>
 <p><strong>Mental Model:</strong> Group data and apply functions within each group.</p>
 <p>Now let’s analyze service levels by category:</p>
-<div id="mental-model-7-groupby" class="cell" data-execution_count="11">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Analyze service levels by product category</span></span>
-<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>service_by_category <span class="op">=</span> (</span>
-<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>    shipments_with_category</span>
-<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>    .groupby(<span class="st">'prodCategory'</span>)  <span class="co"># Split by product category</span></span>
-<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>    .agg({</span>
-<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a>        <span class="st">'is_late'</span>: [<span class="st">'any'</span>, <span class="st">'count'</span>, <span class="st">'sum'</span>, <span class="st">'mean'</span>],  <span class="co"># Count, late count, percentage late</span></span>
-<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a>        <span class="st">'days_late'</span>: [<span class="st">'mean'</span>, <span class="st">'max'</span>]  <span class="co"># Average and max days late</span></span>
-<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a>    })</span>
-<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a>    .<span class="bu">round</span>(<span class="dv">3</span>)</span>
-<span id="cb21-10"><a href="#cb21-10" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb21-11"><a href="#cb21-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb21-12"><a href="#cb21-12" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Service Level by Product Category:"</span>)</span>
-<span id="cb21-13"><a href="#cb21-13" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(service_by_category)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="mental-model-7-groupby" class="cell" data-execution_count="13">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Analyze service levels by product category</span></span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>service_by_category <span class="op">=</span> (</span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>    shipments_with_category</span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>    .groupby(<span class="st">'prodCategory'</span>)  <span class="co"># Split by product category</span></span>
+<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a>    .agg({</span>
+<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a>        <span class="st">'is_late'</span>: [<span class="st">'any'</span>, <span class="st">'count'</span>, <span class="st">'sum'</span>, <span class="st">'mean'</span>],  <span class="co"># Count, late count, percentage late</span></span>
+<span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a>        <span class="st">'days_late'</span>: [<span class="st">'mean'</span>, <span class="st">'max'</span>]  <span class="co"># Average and max days late</span></span>
+<span id="cb25-8"><a href="#cb25-8" aria-hidden="true" tabindex="-1"></a>    })</span>
+<span id="cb25-9"><a href="#cb25-9" aria-hidden="true" tabindex="-1"></a>    .<span class="bu">round</span>(<span class="dv">3</span>)</span>
+<span id="cb25-10"><a href="#cb25-10" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb25-11"><a href="#cb25-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-12"><a href="#cb25-12" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Service Level by Product Category:"</span>)</span>
+<span id="cb25-13"><a href="#cb25-13" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(service_by_category)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Service Level by Product Category:
              is_late                   days_late    
@@ -638,35 +687,71 @@ SpareParts      True   767  137  0.179    -1.003  21</code></pre>
 </div>
 <section id="briefly-give-answers-to-the-discussion-questions-in-this-section-6" class="level4">
 <h4 class="anchored" data-anchor-id="briefly-give-answers-to-the-discussion-questions-in-this-section-6">Briefly Give Answers to the Discussion Questions In This Section</h4>
-<blockquote class="blockquote">
-<p>Replace this with your answers to the discussion questions</p>
-</blockquote>
+<ol type="1">
+<li><p><code>.groupby('prodCategory')</code> actually creates a Python GroupBy object, representing the original dataset subsetted out into different groups based on the value of <code>prodCategory</code>. It doesn’t apply any summarization or calculate any metrics. If you don’t do <code>.agg()</code>, you just have the regular GroupBy object which doesn’t have any aggregation data, which still technically contains the raw data but in whatever way that the GroupBy object stores it.</p></li>
+<li><p>One <code>shipID</code> represents one shipment – so this is far more granular. We are essentially looking at every order, grouping them up by all their shipments and seeing within <em>each</em> shipment, which product categories are late and by how much? And how may of each category is shipped?</p></li>
+</ol>
+<div id="mental-model-7-groupby-2" class="cell" data-execution_count="14">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb27"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Analyze service levels by product category</span></span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>service_by_category <span class="op">=</span> (</span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>    shipments_with_category</span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a>    .groupby([<span class="st">'shipID'</span>,<span class="st">'prodCategory'</span>])  <span class="co"># Split by product category</span></span>
+<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a>    .agg({</span>
+<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a>        <span class="st">'is_late'</span>: [<span class="st">'any'</span>, <span class="st">'count'</span>, <span class="st">'sum'</span>, <span class="st">'mean'</span>],  <span class="co"># Count, late count, percentage late</span></span>
+<span id="cb27-7"><a href="#cb27-7" aria-hidden="true" tabindex="-1"></a>        <span class="st">'days_late'</span>: [<span class="st">'mean'</span>, <span class="st">'max'</span>]  <span class="co"># Average and max days late</span></span>
+<span id="cb27-8"><a href="#cb27-8" aria-hidden="true" tabindex="-1"></a>    })</span>
+<span id="cb27-9"><a href="#cb27-9" aria-hidden="true" tabindex="-1"></a>    .<span class="bu">round</span>(<span class="dv">3</span>)</span>
+<span id="cb27-10"><a href="#cb27-10" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb27-11"><a href="#cb27-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-12"><a href="#cb27-12" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Service Level by Product Category and Ship ID:"</span>)</span>
+<span id="cb27-13"><a href="#cb27-13" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(service_by_category)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Service Level by Product Category and Ship ID:
+                    is_late                days_late    
+                        any count sum mean      mean max
+shipID prodCategory                                     
+10001  Machines       False     1   0  0.0     -33.0 -33
+10002  Marketables    False     1   0  0.0     -11.0 -11
+10003  Machines       False     1   0  0.0     -18.0 -18
+10004  Marketables    False     1   0  0.0      -6.0  -6
+10005  Machines       False     1   0  0.0      -6.0  -6
+...                     ...   ...  ..  ...       ...  ..
+10999  Liquids        False     2   0  0.0       0.0   0
+       Marketables    False     9   0  0.0       0.0   0
+11001  SpareParts      True     1   1  1.0      11.0  11
+11002  Marketables    False     1   0  0.0       0.0   0
+11003  Marketables    False     1   0  0.0       0.0   0
+
+[1359 rows x 6 columns]</code></pre>
+</div>
+</div>
+</section>
 </section>
 </section>
 <section id="answering-a-business-question" class="level2">
 <h2 class="anchored" data-anchor-id="answering-a-business-question">Answering A Business Question</h2>
 <p><strong>Mental Model:</strong> Combine multiple data manipulation techniques to answer complex business questions.</p>
 <p>Let’s create a comprehensive analysis by combining shipment-level data with category information:</p>
-<div id="mental-model-7-comprehensive" class="cell" data-execution_count="12">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a comprehensive analysis dataset</span></span>
-<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>comprehensive_analysis <span class="op">=</span> (</span>
-<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>    shipments_with_category</span>
-<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>    .groupby([<span class="st">'shipID'</span>, <span class="st">'prodCategory'</span>])  <span class="co"># Group by shipment and category</span></span>
-<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>    .agg({</span>
-<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a>        <span class="st">'is_late'</span>: <span class="st">'any'</span>,  <span class="co"># True if any item in this shipment/category is late</span></span>
-<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a>        <span class="st">'days_late'</span>: <span class="st">'max'</span>  <span class="co"># Maximum days late for this shipment/category</span></span>
-<span id="cb23-8"><a href="#cb23-8" aria-hidden="true" tabindex="-1"></a>    })</span>
-<span id="cb23-9"><a href="#cb23-9" aria-hidden="true" tabindex="-1"></a>    .reset_index()</span>
-<span id="cb23-10"><a href="#cb23-10" aria-hidden="true" tabindex="-1"></a>    .assign(</span>
-<span id="cb23-11"><a href="#cb23-11" aria-hidden="true" tabindex="-1"></a>        has_multiple_categories<span class="op">=</span><span class="kw">lambda</span> df: df.groupby(<span class="st">'shipID'</span>)[<span class="st">'prodCategory'</span>].transform(<span class="st">'nunique'</span>) <span class="op">&gt;</span> <span class="dv">1</span></span>
-<span id="cb23-12"><a href="#cb23-12" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb23-13"><a href="#cb23-13" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb23-14"><a href="#cb23-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-15"><a href="#cb23-15" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Comprehensive analysis - shipments with multiple categories:"</span>)</span>
-<span id="cb23-16"><a href="#cb23-16" aria-hidden="true" tabindex="-1"></a>multi_category_shipments <span class="op">=</span> comprehensive_analysis[comprehensive_analysis[<span class="st">'has_multiple_categories'</span>]]</span>
-<span id="cb23-17"><a href="#cb23-17" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Shipments with multiple categories: </span><span class="sc">{</span>multi_category_shipments[<span class="st">'shipID'</span>]<span class="sc">.</span>nunique()<span class="sc">}</span><span class="ss">"</span>)</span>
-<span id="cb23-18"><a href="#cb23-18" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Total unique shipments: </span><span class="sc">{</span>comprehensive_analysis[<span class="st">'shipID'</span>]<span class="sc">.</span>nunique()<span class="sc">}</span><span class="ss">"</span>)</span>
-<span id="cb23-19"><a href="#cb23-19" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Percentage with multiple categories: </span><span class="sc">{</span>multi_category_shipments[<span class="st">'shipID'</span>]<span class="sc">.</span>nunique() <span class="op">/</span> comprehensive_analysis[<span class="st">'shipID'</span>]<span class="sc">.</span>nunique() <span class="op">*</span> <span class="dv">100</span><span class="sc">:.1f}</span><span class="ss">%"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="mental-model-7-comprehensive" class="cell" data-execution_count="15">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb29"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a comprehensive analysis dataset</span></span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>comprehensive_analysis <span class="op">=</span> (</span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>    shipments_with_category</span>
+<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a>    .groupby([<span class="st">'shipID'</span>, <span class="st">'prodCategory'</span>])  <span class="co"># Group by shipment and category</span></span>
+<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a>    .agg({</span>
+<span id="cb29-6"><a href="#cb29-6" aria-hidden="true" tabindex="-1"></a>        <span class="st">'is_late'</span>: <span class="st">'any'</span>,  <span class="co"># True if any item in this shipment/category is late</span></span>
+<span id="cb29-7"><a href="#cb29-7" aria-hidden="true" tabindex="-1"></a>        <span class="st">'days_late'</span>: <span class="st">'max'</span>  <span class="co"># Maximum days late for this shipment/category</span></span>
+<span id="cb29-8"><a href="#cb29-8" aria-hidden="true" tabindex="-1"></a>    })</span>
+<span id="cb29-9"><a href="#cb29-9" aria-hidden="true" tabindex="-1"></a>    .reset_index()</span>
+<span id="cb29-10"><a href="#cb29-10" aria-hidden="true" tabindex="-1"></a>    .assign(</span>
+<span id="cb29-11"><a href="#cb29-11" aria-hidden="true" tabindex="-1"></a>        has_multiple_categories<span class="op">=</span><span class="kw">lambda</span> df: df.groupby(<span class="st">'shipID'</span>)[<span class="st">'prodCategory'</span>].transform(<span class="st">'nunique'</span>) <span class="op">&gt;</span> <span class="dv">1</span></span>
+<span id="cb29-12"><a href="#cb29-12" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb29-13"><a href="#cb29-13" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb29-14"><a href="#cb29-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-15"><a href="#cb29-15" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Comprehensive analysis - shipments with multiple categories:"</span>)</span>
+<span id="cb29-16"><a href="#cb29-16" aria-hidden="true" tabindex="-1"></a>multi_category_shipments <span class="op">=</span> comprehensive_analysis[comprehensive_analysis[<span class="st">'has_multiple_categories'</span>]]</span>
+<span id="cb29-17"><a href="#cb29-17" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Shipments with multiple categories: </span><span class="sc">{</span>multi_category_shipments[<span class="st">'shipID'</span>]<span class="sc">.</span>nunique()<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb29-18"><a href="#cb29-18" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Total unique shipments: </span><span class="sc">{</span>comprehensive_analysis[<span class="st">'shipID'</span>]<span class="sc">.</span>nunique()<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb29-19"><a href="#cb29-19" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Percentage with multiple categories: </span><span class="sc">{</span>multi_category_shipments[<span class="st">'shipID'</span>]<span class="sc">.</span>nunique() <span class="op">/</span> comprehensive_analysis[<span class="st">'shipID'</span>]<span class="sc">.</span>nunique() <span class="op">*</span> <span class="dv">100</span><span class="sc">:.1f}</span><span class="ss">%"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Comprehensive analysis - shipments with multiple categories:
 Shipments with multiple categories: 232
@@ -689,63 +774,22 @@ Percentage with multiple categories: 23.3%</code></pre>
 </div>
 <section id="briefly-give-answers-to-the-discussion-questions-in-this-section-7" class="level4">
 <h4 class="anchored" data-anchor-id="briefly-give-answers-to-the-discussion-questions-in-this-section-7">Briefly Give Answers to the Discussion Questions In This Section</h4>
-<blockquote class="blockquote">
-<p>Replace this with your answers to the discussion questions</p>
-</blockquote>
+<ol type="1">
+<li>This answers how many of the shipments shipped with multiple categories. We grouped by two fields <code>shipID</code> and <code>prodCategory</code>, and each have duplicate values in their columns because they have a many-to-many relationship. So we use <code>nunique()</code> to count the number of unique shipments from our multi-category-shipments-only dataset. Grouping by only <code>prodCategory</code> will destroy the <code>shipID</code> information in our dataset – we would not be able to distinguish which shipment was associated to which product categories. The high percentage of multi-category shipments tells us that we should look further into whether one particular category is causing the whole shipment to be late.</li>
+</ol>
 </section>
 </section>
-<section id="student-analysis-section" class="level2">
-<h2 class="anchored" data-anchor-id="student-analysis-section">Student Analysis Section: Mastering Data Manipulation</h2>
-<p><strong>Your Task:</strong> Demonstrate your mastery of the seven mental models through comprehensive discussion and analysis. The bulk of your grade comes from thoughtfully answering the discussion questions for each mental model. See below for more details.</p>
-<section id="core-challenge-discussion-questions-analysis" class="level3">
-<h3 class="anchored" data-anchor-id="core-challenge-discussion-questions-analysis">Core Challenge: Discussion Questions Analysis</h3>
-<p><strong>For each mental model, provide:</strong> - Clear, concise answers to all discussion questions - Code examples where appropriate to support your explanations</p>
-<div class="callout callout-style-default callout-important callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Important</span>📊 Discussion Questions Requirements
+<section id="visualization-service-level-by-product-category" class="level2">
+<h2 class="anchored" data-anchor-id="visualization-service-level-by-product-category">Visualization: Service Level by Product Category</h2>
+<div id="cell-service-level-by-category" class="cell" data-execution_count="16">
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="index_files/figure-html/service-level-by-category-output-1.png" id="service-level-by-category" width="758" height="471" class="figure-img"></p>
+</figure>
 </div>
 </div>
-<div class="callout-body-container callout-body">
-<p><strong>Complete all discussion question sections:</strong> 1. <strong>Assign Mental Model:</strong> Data types, date handling, and debugging 2. <strong>Subset Mental Model:</strong> Filtering strategies and complex queries 3. <strong>Drop Mental Model:</strong> Data cleaning and quality management 4. <strong>Sort Mental Model:</strong> Data organization and business logic 5. <strong>Aggregate Mental Model:</strong> Summary statistics and business metrics 6. <strong>Merge Mental Model:</strong> Data integration and quality control 7. <strong>Split-Apply-Combine Mental Model:</strong> Group analysis and advanced operations 8. <strong>Answering A Business Question:</strong> Combining multiple data manipulation techniques to answer a business question</p>
 </div>
-</div>
-</section>
-<section id="professional-visualizations-for-100-grade" class="level3">
-<h3 class="anchored" data-anchor-id="professional-visualizations-for-100-grade">Professional Visualizations (For 100% Grade)</h3>
-<p><strong>Your Task:</strong> Create a professional visualization that supports your analysis and demonstrates your understanding of the data.</p>
-<p><strong>Create visualizations showing:</strong> - Service level (on-time percentage) by product category</p>
-<p><strong>Your visualizations should:</strong> - Use clear labels and professional formatting - Support the insights from your discussion questions - Be appropriate for a business audience - Do not <code>echo</code> the code that creates the visualizations</p>
-</section>
-</section>
-<section id="challenge-requirements" class="level2">
-<h2 class="anchored" data-anchor-id="challenge-requirements">Challenge Requirements 📋</h2>
-<p><strong>Your Primary Task:</strong> Answer all discussion questions for the seven mental models with thoughtful, well-reasoned responses that demonstrate your understanding of data manipulation concepts.</p>
-<p><strong>Key Requirements:</strong> - Complete discussion questions for each mental model - Demonstrate clear understanding of pandas concepts and data manipulation techniques - Write clear, business-focused analysis that explains your findings</p>
-</section>
-<section id="getting-started-repository-setup" class="level2">
-<h2 class="anchored" data-anchor-id="getting-started-repository-setup">Getting Started: Repository Setup 🚀</h2>
-<div class="callout callout-style-default callout-important callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Important</span>📁 Getting Started
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p><strong>Step 1:</strong> Fork and clone this challenge repository - Go to the course repository and find the “dataManipulationChallenge” folder - Fork it to your GitHub account, or clone it directly - Open the cloned repository in Cursor</p>
-<p><strong>Step 2:</strong> Set up your Python environment - Follow the Python setup instructions above (use your existing venv from Tech Setup Challenge Part 2) - Make sure your virtual environment is activated and the Python interpreter is set</p>
-<p><strong>Step 3:</strong> You’re ready to start! The data loading code is already provided in this file.</p>
-<p><strong>Note:</strong> This challenge uses the same <code>index.qmd</code> file you’re reading right now - you’ll edit it to complete your analysis.</p>
-</div>
-</div>
-<section id="getting-started-tips" class="level3">
-<h3 class="anchored" data-anchor-id="getting-started-tips">Getting Started Tips</h3>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -762,92 +806,6 @@ Percentage with multiple categories: 23.3%</code></pre>
 <p><em>Think of method chaining like building with LEGO blocks - each piece connects to the next, creating something more complex and useful than the individual pieces.</em></p>
 </div>
 </div>
-<div class="callout callout-style-default callout-warning callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Warning</span>💾 Important: Save Your Work Frequently!
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p><strong>Before you start:</strong> Make sure to commit your work often using the Source Control panel in Cursor (Ctrl+Shift+G or Cmd+Shift+G). This prevents the AI from overwriting your progress and ensures you don’t lose your work.</p>
-<p><strong>Commit after each major step:</strong></p>
-<ul>
-<li>After completing each mental model section</li>
-<li>After adding your visualizations</li>
-<li>After completing your advanced method chain</li>
-<li>Before asking the AI for help with new code</li>
-</ul>
-<p><strong>How to commit:</strong></p>
-<ol type="1">
-<li>Open Source Control panel (Ctrl+Shift+G)</li>
-<li>Stage your changes (+ button)</li>
-<li>Write a descriptive commit message</li>
-<li>Click the checkmark to commit</li>
-</ol>
-<p><em>Remember: Frequent commits are your safety net!</em></p>
-</div>
-</div>
-</section>
-</section>
-<section id="grading-rubric" class="level2">
-<h2 class="anchored" data-anchor-id="grading-rubric">Grading Rubric 🎓</h2>
-<p><strong>75% Grade:</strong> Complete discussion questions for at least 5 of the 7 mental models with clear, thoughtful responses.</p>
-<p><strong>85% Grade:</strong> Complete discussion questions for all 7 mental models with comprehensive, well-reasoned responses.</p>
-<p><strong>95% Grade:</strong> Complete all discussion questions plus the “Answering A Business Question” section.</p>
-<p><strong>100% Grade:</strong> Complete all discussion questions plus create a professional visualization showing service level by product category.</p>
-</section>
-<section id="submission-checklist" class="level2">
-<h2 class="anchored" data-anchor-id="submission-checklist">Submission Checklist ✅</h2>
-<p><strong>Minimum Requirements (Required for Any Points):</strong></p>
-<ul class="task-list">
-<li><label><input type="checkbox">Created repository named “dataManipulationChallenge” in your GitHub account</label></li>
-<li><label><input type="checkbox">Cloned repository locally using Cursor (or VS Code)</label></li>
-<li><label><input type="checkbox">Completed discussion questions for at least 5 of the 7 mental models</label></li>
-<li><label><input type="checkbox">Document rendered to HTML successfully</label></li>
-<li><label><input type="checkbox">HTML files uploaded to your repository</label></li>
-<li><label><input type="checkbox">GitHub Pages enabled and working</label></li>
-<li><label><input type="checkbox">Site accessible at <code>https://[your-username].github.io/dataManipulationChallenge/</code></label></li>
-</ul>
-<p><strong>75% Grade Requirements:</strong></p>
-<ul class="task-list">
-<li><label><input type="checkbox">Complete discussion questions for at least 5 of the 7 mental models</label></li>
-<li><label><input type="checkbox">Clear, thoughtful responses that demonstrate understanding</label></li>
-<li><label><input type="checkbox">Code examples where appropriate to support explanations</label></li>
-</ul>
-<p><strong>85% Grade Requirements:</strong></p>
-<ul class="task-list">
-<li><label><input type="checkbox">Complete discussion questions for all 7 mental models</label></li>
-<li><label><input type="checkbox">Comprehensive, well-reasoned responses showing deep understanding</label></li>
-<li><label><input type="checkbox">Business context for why concepts matter</label></li>
-<li><label><input type="checkbox">Examples of real-world applications</label></li>
-</ul>
-<p><strong>95% Grade Requirements:</strong></p>
-<ul class="task-list">
-<li><label><input type="checkbox">Complete discussion questions for all 7 mental models</label></li>
-<li><label><input type="checkbox">Complete the “Answering A Business Question” discussion questions</label></li>
-<li><label><input type="checkbox">Comprehensive, well-reasoned responses showing deep understanding</label></li>
-<li><label><input type="checkbox">Business context for why concepts matter</label></li>
-</ul>
-<p><strong>100% Grade Requirements:</strong></p>
-<ul class="task-list">
-<li><label><input type="checkbox">All discussion questions completed with professional quality</label></li>
-<li><label><input type="checkbox">Professional visualization showing service level by product category</label></li>
-<li><label><input type="checkbox">Professional presentation style appropriate for business audience</label></li>
-<li><label><input type="checkbox">Clear, engaging narrative that tells a compelling story</label></li>
-<li><label><input type="checkbox">Practical insights that would help ZappTech’s management</label></li>
-</ul>
-<p><strong>Report Quality (Critical for Higher Grades):</strong></p>
-<ul class="task-list">
-<li><label><input type="checkbox">Professional writing style (no AI-generated fluff)</label></li>
-<li><label><input type="checkbox">Concise analysis that gets to the point</label></li>
-</ul>
-</section>
-</div>
-</div>
-</section>
 </section>
 </section>
 

@@ -513,7 +513,7 @@ print(service_by_category)
 2. 
 One `shipID` represents one shipment -- so this is far more granular. We are essentially looking at every order, grouping them up by all their shipments and seeing within _each_ shipment, which product categories are late and by how much? And how may of each category is shipped? 
 ```{python}
-#| label: mental-model-7-groupby
+#| label: mental-model-7-groupby-2
 #| echo: true
 
 # Analyze service levels by product category
@@ -623,70 +623,6 @@ plt.show()
 ```
 
 
-### Core Challenge: Discussion Questions Analysis
-
-**For each mental model, provide:**
-- Clear, concise answers to all discussion questions
-- Code examples where appropriate to support your explanations
-
-::: {.callout-important}
-## 📊 Discussion Questions Requirements
-
-**Complete all discussion question sections:**
-1. **Assign Mental Model:** Data types, date handling, and debugging
-2. **Subset Mental Model:** Filtering strategies and complex queries
-3. **Drop Mental Model:** Data cleaning and quality management
-4. **Sort Mental Model:** Data organization and business logic
-5. **Aggregate Mental Model:** Summary statistics and business metrics
-6. **Merge Mental Model:** Data integration and quality control
-7. **Split-Apply-Combine Mental Model:** Group analysis and advanced operations
-8. **Answering A Business Question:** Combining multiple data manipulation techniques to answer a business question
-:::
-
-### Professional Visualizations (For 100% Grade)
-
-**Your Task:** Create a professional visualization that supports your analysis and demonstrates your understanding of the data.
-
-**Create visualizations showing:**
-- Service level (on-time percentage) by product category
-
-**Your visualizations should:**
-- Use clear labels and professional formatting
-- Support the insights from your discussion questions
-- Be appropriate for a business audience
-- Do not `echo` the code that creates the visualizations
-
-## Challenge Requirements 📋
-
-**Your Primary Task:** Answer all discussion questions for the seven mental models with thoughtful, well-reasoned responses that demonstrate your understanding of data manipulation concepts.
-
-**Key Requirements:**
-- Complete discussion questions for each mental model
-- Demonstrate clear understanding of pandas concepts and data manipulation techniques
-- Write clear, business-focused analysis that explains your findings
-
-## Getting Started: Repository Setup 🚀
-
-::: {.callout-important}
-## 📁 Getting Started
-
-**Step 1:** Fork and clone this challenge repository
-- Go to the course repository and find the "dataManipulationChallenge" folder
-- Fork it to your GitHub account, or clone it directly
-- Open the cloned repository in Cursor
-
-**Step 2:** Set up your Python environment
-- Follow the Python setup instructions above (use your existing venv from Tech Setup Challenge Part 2)
-- Make sure your virtual environment is activated and the Python interpreter is set
-
-**Step 3:** You're ready to start! The data loading code is already provided in this file.
-
-**Note:** This challenge uses the same `index.qmd` file you're reading right now - you'll edit it to complete your analysis.
-:::
-
-
-### Getting Started Tips
-
 ::: {.callout-note}
 ## 🎯 Method Chaining Philosophy
 
@@ -694,82 +630,3 @@ plt.show()
 
 *Think of method chaining like building with LEGO blocks - each piece connects to the next, creating something more complex and useful than the individual pieces.*
 :::
-
-::: {.callout-warning}
-## 💾 Important: Save Your Work Frequently!
-
-**Before you start:** Make sure to commit your work often using the Source Control panel in Cursor (Ctrl+Shift+G or Cmd+Shift+G). This prevents the AI from overwriting your progress and ensures you don't lose your work.
-
-**Commit after each major step:**
-
-- After completing each mental model section
-- After adding your visualizations
-- After completing your advanced method chain
-- Before asking the AI for help with new code
-
-**How to commit:**
-
-1. Open Source Control panel (Ctrl+Shift+G)
-2. Stage your changes (+ button)
-3. Write a descriptive commit message
-4. Click the checkmark to commit
-
-*Remember: Frequent commits are your safety net!*
-:::
-
-## Grading Rubric 🎓
-
-**75% Grade:** Complete discussion questions for at least 5 of the 7 mental models with clear, thoughtful responses.
-
-**85% Grade:** Complete discussion questions for all 7 mental models with comprehensive, well-reasoned responses.
-
-**95% Grade:** Complete all discussion questions plus the "Answering A Business Question" section.
-
-**100% Grade:** Complete all discussion questions plus create a professional visualization showing service level by product category.
-
-## Submission Checklist ✅
-
-**Minimum Requirements (Required for Any Points):**
-
-- [ ] Created repository named "dataManipulationChallenge" in your GitHub account
-- [ ] Cloned repository locally using Cursor (or VS Code)
-- [ ] Completed discussion questions for at least 5 of the 7 mental models
-- [ ] Document rendered to HTML successfully
-- [ ] HTML files uploaded to your repository
-- [ ] GitHub Pages enabled and working
-- [ ] Site accessible at `https://[your-username].github.io/dataManipulationChallenge/`
-
-**75% Grade Requirements:**
-
-- [ ] Complete discussion questions for at least 5 of the 7 mental models
-- [ ] Clear, thoughtful responses that demonstrate understanding
-- [ ] Code examples where appropriate to support explanations
-
-**85% Grade Requirements:**
-
-- [ ] Complete discussion questions for all 7 mental models
-- [ ] Comprehensive, well-reasoned responses showing deep understanding
-- [ ] Business context for why concepts matter
-- [ ] Examples of real-world applications
-
-**95% Grade Requirements:**
-
-- [ ] Complete discussion questions for all 7 mental models
-- [ ] Complete the "Answering A Business Question" discussion questions
-- [ ] Comprehensive, well-reasoned responses showing deep understanding
-- [ ] Business context for why concepts matter
-
-**100% Grade Requirements:**
-
-- [ ] All discussion questions completed with professional quality
-- [ ] Professional visualization showing service level by product category
-- [ ] Professional presentation style appropriate for business audience
-- [ ] Clear, engaging narrative that tells a compelling story
-- [ ] Practical insights that would help ZappTech's management
-
-**Report Quality (Critical for Higher Grades):**
-
-- [ ] Professional writing style (no AI-generated fluff)
-- [ ] Concise analysis that gets to the point
-
-
