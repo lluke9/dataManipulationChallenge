@@ -150,6 +150,9 @@ print(shipments_with_lateness[['shipID', 'plannedShipDate', 'actualShipDate', 'i
 **Question 2: String vs Date Comparison**
 - Can you give an example where comparing two dates as strings would yield unintuitive results, e.g. what happens if you try to compare "04-11-2025" and "05-20-2024" as strings vs as dates?
 
+::: 
+
+
 **Question 3: Debug This Code**
 ```python
 # This code has an error - can you spot it?
@@ -264,12 +267,27 @@ print(late_shipments.head())
 `.query('is_late == True')` is the method chaining way of writing a query operation. `[df['is_late'] == True]` is the traditional Pythonic way of doing it, but obscures the meaning behind the Python operations -- a subscription operator on the dataframe with `df['is_late']` and then a comparison operator `==`, which operationally interprets into "df rows, where is_late is True". The `.query()` method is far more explicit about this, since we can almost 1-1 interpret the keywords back into the natural language. 
 
 2. 
+```{python}
+#| echo: true
+# Query rows for shipments later than 5 days
+late_shipments_5days = (
+    shipments_with_lateness
+    .assign(
+        late_threshold=5
+    )
+    .query('days_late > late_threshold')  # Query rows where is_late is True
+    .filter(['shipID', 'partID', 'plannedShipDate', 'actualShipDate', 'days_late'])  # Filter to keep specific columns
+)
 
+print(f"Found {len(late_shipments_5days)} shipments later than 5 days out of {len(shipments_with_lateness)} total")
+print("\nLate shipments sample:")
+print(late_shipments.head())
+```
 
 
 
 ### 3. Drop: Removing Unwanted Data
-
+ 
 **Mental Model:** Remove columns or rows you don't need.
 
 Let's clean up our data by removing unnecessary columns:
@@ -304,7 +322,14 @@ print("Remaining columns:", clean_shipments.columns.tolist())
 
 #### Briefly Give Answers to the Discussion Questions In This Section
 
-> Replace this with your answers to the discussion questions
+1. 
+They achieve mostly the same thing. However, if you have a particularly wide dataset and want to only drop a few, `.drop()` is more convenient than `.filter()`
+
+2. 
+By default, if you do not provide `.dropna()` with a `subset` argument, the default is that it drops all rows with a `null` in _any_ column. The default values for `.dropna()` per the documentation are:
+- `subset=Null` -- this is interpreted as considering columns. 
+- `how="any""` -- this is interpreted as "drop all rows that are missing any of the columns designated by `subset`"
+
 
 ### 4. Sort: Arranging Data
 
@@ -342,7 +367,13 @@ print(sorted_by_lateness[['shipID', 'partID', 'days_late', 'is_late']].head(10))
 
 #### Briefly Give Answers to the Discussion Questions In This Section
 
-> Replace this with your answers to the discussion questions
+1. 
+`ascending=False` means that it is sorted in descending order of the designated column, in this case `days_late`. The highest value for `days_late`, i.e. the latest shipment, will be listed first.
+To sort by multiple columns, the parameter `by` seems to accept type of `IndexLabel`, meaning we could pass in an array of columns or an index object like `df.columns`. 
+
+2. 
+We use `.reset_index(drop=True)` because when we sort, the row indices actually follow the original rows -- so the row indices will not be in increasing order as we expect.This method will also re-index, and discard the old one with `drop=True`. Normally it will preserve it in a new column.
+Not resetting the index could be problematic if we use, say, `.loc[:5]` to take the top 5, when in reality indices 0, 1, 2, 3, and 4 could be anywhere in the dataframe.  
 
 ### 5. Aggregate: Summarizing Data
 
@@ -382,7 +413,8 @@ print(f"\nOn-time delivery rate: {on_time_rate:.1f}%")
 
 #### Briefly Give Answers to the Discussion Questions In This Section
 
-> Replace this with your answers to the discussion questions
+1. 
+Running `sum()` on a Boolean series treats booleans as integers 0 and 1, so `sum()` just counts the number of `True` values. 
 
 ### 6. Merge: Combining Information
 
@@ -421,7 +453,20 @@ print(shipments_with_category['prodCategory'].value_counts())
 
 #### Briefly Give Answers to the Discussion Questions In This Section
 
-> Replace this with your answers to the discussion questions
+1. 
+The idea here is to look up product information for each shipment using the field `partID`. Even if that `partID` field is null, we should keep that shipment, and that's what `how='left'` does. We can verify that no shipments were lost:
+
+```{python}
+print(f"Number of shipments in original dataset: {clean_shipments['actualShipDate'].count()}\n")
+print(f"Number of shipments in new dataset: {shipments_with_category['actualShipDate'].count()}\n")
+
+```
+
+We use `actualShipDate` because this field is not tampered with when we join with the product dataset -- it doesn't exist in that one. If we have 4000 non-null `actualShipDate` rows then we know the original ones are in there. 
+
+
+2. 
+If there are duplicates on the right side, the row in the original dataset is duplicated also with respective product information for each duplicated row. 
 
 ### 7. Split-Apply-Combine: Group Analysis
 
@@ -461,7 +506,32 @@ print(service_by_category)
 
 #### Briefly Give Answers to the Discussion Questions In This Section
 
-> Replace this with your answers to the discussion questions
+1. 
+`.groupby('prodCategory')` actually creates a Python GroupBy object, representing the original dataset subsetted out into different groups based on the value of `prodCategory`. It doesn't apply any summarization or calculate any metrics. If you don't do `.agg()`, you just have the regular GroupBy object which doesn't have any aggregation data, which still technically contains the raw data but in whatever way that the GroupBy object stores it. 
+
+
+2. 
+One `shipID` represents one shipment -- so this is far more granular. We are essentially looking at every order, grouping them up by all their shipments and seeing within _each_ shipment, which product categories are late and by how much? And how may of each category is shipped? 
+```{python}
+#| label: mental-model-7-groupby
+#| echo: true
+
+# Analyze service levels by product category
+service_by_category = (
+    shipments_with_category
+    .groupby(['shipID','prodCategory'])  # Split by product category
+    .agg({
+        'is_late': ['any', 'count', 'sum', 'mean'],  # Count, late count, percentage late
+        'days_late': ['mean', 'max']  # Average and max days late
+    })
+    .round(3)
+)
+
+print("Service Level by Product Category and Ship ID:")
+print(service_by_category)
+```
+
+
 
 ## Answering A Business Question
 
@@ -505,11 +575,53 @@ print(f"Percentage with multiple categories: {multi_category_shipments['shipID']
 
 #### Briefly Give Answers to the Discussion Questions In This Section
 
-> Replace this with your answers to the discussion questions
+1. 
+This answers how many of the shipments shipped with multiple categories. We grouped by two fields `shipID` and `prodCategory`, and each have duplicate values in their columns because they have a many-to-many relationship. So we use `nunique()` to count the number of unique shipments from our multi-category-shipments-only dataset. 
+Grouping by only `prodCategory` will destroy the `shipID` information in our dataset -- we would not be able to distinguish which shipment was associated to which product categories. 
+The high percentage of multi-category shipments tells us that we should look further into whether one particular category is causing the whole shipment to be late. 
 
-## Student Analysis Section: Mastering Data Manipulation {#student-analysis-section}
+## Visualization: Service Level by Product Category
+```{python}
+#| label: service-level-by-category
+#| echo: false
+import matplotlib.pyplot as plt
 
-**Your Task:** Demonstrate your mastery of the seven mental models through comprehensive discussion and analysis. The bulk of your grade comes from thoughtfully answering the discussion questions for each mental model. See below for more details.
+# Calculate service level (on-time percentage) by product category
+service_level = (
+    shipments_with_category
+    .groupby('prodCategory')['is_late']
+    .apply(lambda x: 1 - x.mean())  # service level: 1 - fraction late
+    .reset_index(name='service_level')
+    .sort_values('service_level', ascending=False)
+)
+
+# Set up the horizontal bar plot
+fig, ax = plt.subplots(figsize=(8,5))
+bars = ax.barh(service_level['prodCategory'], service_level['service_level'], color='#1f77b4')
+
+# Add percentage labels on bars, ensuring labels stay in bounds
+for bar in bars:
+    width = bar.get_width()
+    yval = bar.get_y() + bar.get_height() / 2
+    offset = -40 if width > 0.90 else 3  # move the label inside the bar for very high values
+    ha = 'right' if width > 0.90 else 'left'
+    ax.annotate(f"{width:.0%}",
+                xy=(width, yval),
+                xytext=(offset,0),
+                textcoords="offset points",
+                va='center', ha=ha, fontsize=11, color="white" if width > 0.90 else "black")
+
+# Professional formatting
+ax.set_title("Service Level by Product Category", fontsize=15, pad=13)
+ax.set_ylabel("Product Category", fontsize=12)
+ax.set_xlabel("On-Time Percentage", fontsize=12)
+ax.set_xlim(0, 1)
+ax.xaxis.set_major_formatter(plt.FuncFormatter(lambda x, _: '{:.0%}'.format(x)))
+
+plt.tight_layout()
+plt.show()
+```
+
 
 ### Core Challenge: Discussion Questions Analysis
 
